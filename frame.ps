@@ -1,0 +1,16 @@
+%!
+
+/renderFrame {
+    /dx frameWidth totalProgress mul def
+    /dy frameHeight totalProgress mul def
+    newpath
+    dx dy moveto
+    0 100 rlineto
+    100 0 rlineto
+    0 -100 rlineto
+    closepath
+    stroke
+} def
+
+renderFrame
+showpage
