@@ -1,0 +1,163 @@
+%!
+
+%%% Fish movement
+
+/renderDebugFishPath {
+    debugLine
+
+    14 dict begin
+
+    % Params
+    /timeAtZero exch def
+    /t exch def
+    /ups 3 def
+    /width 2760 def
+    /height 240 def
+    /loopTimeSecs 8 def
+    /squashThreshold 4 100 div def
+
+    % Private computation
+    /halfTimeSecs loopTimeSecs 2 div def
+    /maxSindegs ups 1 sub 360 mul 180 add 2 mul def
+
+    % Debug render computation
+    /frameTime 1 fps div def
+
+    % Translate to middle
+    gsave
+    0 width sub 2 div 0 translate
+
+    % Path
+    0 1 0 setrgbcolor
+    newpath
+    0 0 moveto
+
+    /u 0 def
+    {
+        /y maxSindegs u loopTimeSecs div mul sin height mul 2 div def
+        u halfTimeSecs le {
+            /x width u mul halfTimeSecs div def
+        } {
+            u loopTimeSecs ge {
+                closepath
+                exit
+            } if
+            /x width u halfTimeSecs sub halfTimeSecs div width mul sub def
+        } ifelse
+        x y lineto
+        /u u frameTime add def
+    } loop
+
+    stroke
+
+    % Square
+    /v t timeAtZero add def
+    /xScale 1 def
+    {
+        v loopTimeSecs ge {
+            /v v loopTimeSecs sub def
+        } {
+            exit
+        } ifelse
+    } loop
+
+    /y maxSindegs v loopTimeSecs div mul sin height mul 2 div def
+    v halfTimeSecs le {
+        /x width v mul halfTimeSecs div def
+
+        % Squash
+        v halfTimeSecs squashThreshold mul lt {
+            /xScale v halfTimeSecs squashThreshold mul div def
+        } if
+        v halfTimeSecs halfTimeSecs squashThreshold mul sub gt {
+            /xScale halfTimeSecs v sub halfTimeSecs squashThreshold mul div def
+        } if
+
+        /xScale xScale -1 mul def
+    } {
+        /x width v halfTimeSecs sub halfTimeSecs div width mul sub def
+
+        % Squash
+        v halfTimeSecs sub halfTimeSecs squashThreshold mul lt {
+            /xScale v halfTimeSecs sub halfTimeSecs squashThreshold mul div def
+        } if
+        v halfTimeSecs sub halfTimeSecs halfTimeSecs squashThreshold mul sub gt {
+            /xScale halfTimeSecs v halfTimeSecs sub sub halfTimeSecs squashThreshold mul div def
+        } if
+
+    } ifelse
+
+    gsave
+    x y translate
+    xScale 1 scale
+    renderDebugSquare
+    grestore
+
+    % Translate back from middle
+    grestore
+
+    end
+} def
+
+/translateAndScaleFishMovement {
+    13 dict begin
+
+    % Params
+    /timeAtZero exch def
+    /t exch def
+    /ups 3 def
+    /width 2760 def
+    /height 240 def
+    /loopTimeSecs 8 def
+    /squashThreshold 4 100 div def
+
+    % Private computation
+    /halfTimeSecs loopTimeSecs 2 div def
+    /maxSindegs ups 1 sub 360 mul 180 add 2 mul def
+
+    % Translate to middle
+    gsave
+    0 width sub 2 div 0 translate
+
+    % Object
+    /v t timeAtZero add def
+    /xScale 1 def
+    {
+        v loopTimeSecs ge {
+            /v v loopTimeSecs sub def
+        } {
+            exit
+        } ifelse
+    } loop
+
+    /y maxSindegs v loopTimeSecs div mul sin height mul 2 div def
+    v halfTimeSecs le {
+        /x width v mul halfTimeSecs div def
+
+        % Squash
+        v halfTimeSecs squashThreshold mul lt {
+            /xScale v halfTimeSecs squashThreshold mul div def
+        } if
+        v halfTimeSecs halfTimeSecs squashThreshold mul sub gt {
+            /xScale halfTimeSecs v sub halfTimeSecs squashThreshold mul div def
+        } if
+
+        /xScale xScale -1 mul def
+    } {
+        /x width v halfTimeSecs sub halfTimeSecs div width mul sub def
+
+        % Squash
+        v halfTimeSecs sub halfTimeSecs squashThreshold mul lt {
+            /xScale v halfTimeSecs sub halfTimeSecs squashThreshold mul div def
+        } if
+        v halfTimeSecs sub halfTimeSecs halfTimeSecs squashThreshold mul sub gt {
+            /xScale halfTimeSecs v halfTimeSecs sub sub halfTimeSecs squashThreshold mul div def
+        } if
+
+    } ifelse
+
+    x y translate
+    xScale 1 scale
+
+    end
+} def

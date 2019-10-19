@@ -1,0 +1,19 @@
+%!
+
+%%% Debug
+
+/debugLine {
+    1 setlinewidth
+    0 setlinecap
+    0 setlinejoin
+} def
+
+/renderDebugSquare {
+    1 0 0 setrgbcolor
+    newpath
+    -30 0 moveto
+    30 -30 lineto
+    30 30 lineto
+    closepath
+    fill
+} def

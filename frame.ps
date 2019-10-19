@@ -1,30 +1,27 @@
 %!
 
 (data-ps/colors.ps) run
+(data-ps/debug.ps) run
 (data-ps/static.ps) run
 (data-ps/fish.ps) run
-
-/kwadrat {
-    % Kwadrat
-    colorSand
-    /dx frameWidth totalProgress mul def
-    /dy frameHeight totalProgress mul def
-    newpath
-    dx dy moveto
-    0 100 rlineto
-    100 0 rlineto
-    0 -100 rlineto
-    closepath
-    stroke
-} def
+(data-ps/fish-movement.ps) run
 
 /renderFrame {
+    % Aquarium
     renderAquarium
 
     % Fish in the middle
     gsave
     frameWidth 2 div frameHeight 2 div translate
-    renderFishObject
+    
+        t 2 translateAndScaleFishMovement
+        renderFishObject
+        grestore
+        
+        debug 1 eq {
+            t 2 renderDebugFishPath
+        } if
+    
     grestore
 
     % Big stone
@@ -35,6 +32,8 @@
     grestore
 
 } def
+
+/debug 1 def
 
 renderFrame
 showpage
