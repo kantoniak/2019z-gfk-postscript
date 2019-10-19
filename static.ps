@@ -2,6 +2,7 @@
 
 %%% Static content
 
+% Aquarium
 /renderAquarium {
     standardLine
 
@@ -74,4 +75,30 @@
     grestore
     colorLightBlue
     stroke
+} def
+
+% Stones
+/baseStoneShape {
+    newpath
+    300 0 moveto
+    420 60 420 120 420 180 curveto
+    420 300 300 240 240 300 curveto
+    180 360 240 480 60 480 curveto
+    -120 480 0 360 -180 360 curveto
+    -240 360 -360 360 -360 300 curveto
+    -360 240 -300 240 -300 180 curveto
+    -300 120 -420 60 -300 0 curveto
+    closepath
+} def
+
+/renderStone {
+    baseStoneShape    
+    fill
+} def
+
+/renderSmallStone {
+    gsave
+    1 2 div 1 2 div scale
+    renderStone
+    grestore
 } def
