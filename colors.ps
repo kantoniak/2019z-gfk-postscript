@@ -9,6 +9,7 @@
     r 255 div g 255 div b 255 div setrgbcolor
 } def
 
+% Aquarium
 /colorDarkBlue {
     0 79 139 setRGB
 } def
@@ -25,6 +26,22 @@
     240 177 0 setRGB
 } def
 
-/lineWidth {
+% Fish
+/colorFish {
+    255 255 0 setRGB
+} def
+
+/colorFishFin {
+    170 0 0 setRGB
+} def
+
+/colorFishGills {
+    177 84 24 setRGB
+} def
+
+% Standard line width
+/standardLine {
     10 setlinewidth
+    1 setlinecap
+    1 setlinejoin
 } def

@@ -1,0 +1,73 @@
+%!
+
+%%% Fish
+
+/baseFishShape {
+    newpath
+    240 -120 moveto
+    300 -120 lineto
+    300 120 lineto
+    240 120 lineto
+    180 180 -300 300 -300 0 curveto
+    -300 -240 180 -240 240 -120 curveto
+    closepath
+} def
+
+/renderFishObject {
+    standardLine
+
+    % Base
+    colorFish
+    baseFishShape
+    fill
+
+    % Back fin
+    colorFishFin
+    newpath
+    240 -120 moveto
+    300 -240 420 -240 420 -240 curveto
+    360 -120 360 0 360 0 curveto
+    360 120 420 240 420 240 curveto
+    420 240 300 240 240 120 curveto
+    240 120 300 0 240 -120 240 -120 curveto
+    fill
+
+    % Top fin
+    newpath
+    -120 180 moveto
+    -120 240 -60 300 0 300 curveto
+    60 300 0 240 0 240 curveto
+    0 240 60 300 120 300 curveto
+    180 300 120 180 120 180 curveto
+    120 180 180 240 240 240 curveto
+    300 240 180 120 180 120 curveto
+    60 180 -120 180 -120 180 curveto
+    fill
+
+    % Eye
+    0 0 0 setrgbcolor
+    newpath
+    -150 90 30 0 360 arc
+    fill
+
+    % Gill
+    colorFishGills
+    newpath
+    -60 -120 moveto
+    0 -60 0 0 0 60 curveto
+    stroke
+
+    % Clipping
+    gsave
+    baseFishShape
+    clip
+
+    % Mouth
+    newpath
+    -180 -60 moveto
+    -240 -120 -360 -120 -360 -120 curveto
+    stroke
+
+    % End clipping
+    grestore
+} def
