@@ -250,27 +250,29 @@
 } def
 
 /renderPlantGroup {
+    /groupTimeOffset exch def
     /smallPlantScale 8 10 div def
 
     % Left
     gsave
     180 0 translate
     smallPlantScale smallPlantScale scale
-        1560 120 1600 140 16 8 renderPlant
+        1560 120 1600 140 32 8 groupTimeOffset add renderPlant
     grestore
 
     % Right
     gsave
     -180 0 translate
     smallPlantScale smallPlantScale scale
-        1400 120 1600 140 12 15 renderPlant
+        1400 120 1600 140 12 30 groupTimeOffset add renderPlant
     grestore
 
     % Middle
-    1800 120 1600 140 18 2 renderPlant
+    1800 120 1600 140 36 2 groupTimeOffset add renderPlant
 } def
 
 /renderDebugPlantGroup {
+    /groupTimeOffset exch def
     debug 1 eq {
         debugLine
 
@@ -280,17 +282,17 @@
         gsave
         180 0 translate
         smallPlantScale smallPlantScale scale
-            1560 120 1600 140 16 8 renderDebugPlant
+            1560 120 1600 140 32 8 groupTimeOffset add renderDebugPlant
         grestore
 
         % Right
         gsave
         -180 0 translate
         smallPlantScale smallPlantScale scale
-            1400 120 1600 140 12 15 renderDebugPlant
+            1400 120 1600 140 12 30 groupTimeOffset add renderDebugPlant
         grestore
 
         % Middle
-        1800 120 1600 140 18 2 renderDebugPlant
+        1800 120 1600 140 36 2 groupTimeOffset add renderDebugPlant
     } if
 } def
