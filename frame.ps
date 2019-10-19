@@ -3,6 +3,7 @@
 (data-ps/colors.ps) run
 (data-ps/debug.ps) run
 (data-ps/static.ps) run
+(data-ps/reef.ps) run
 (data-ps/fish.ps) run
 (data-ps/fish-movement.ps) run
 
@@ -10,9 +11,31 @@
     % Aquarium
     renderAquarium
 
+    % Coral reef - back
+    gsave
+    2580 360 translate
+    -1 1 scale
+    colorReefFar
+    5 16 1 renderReef
+    grestore
+
+    % Coral reef - back - stones
+    gsave
+    colorStoneFar
+    2630 300 translate
+    renderSmallStone
+    grestore
+
+    gsave
+    colorLightStoneFar
+    2450 240 translate
+    -1 1 scale
+    renderSmallStone
+    grestore
+
     % Fish in the middle
     gsave
-    frameWidth 2 div frameHeight 2 div translate
+    frameWidth 2 div frameHeight 2 div 120 sub translate
     
         t 2 translateAndScaleFishMovement
         renderFishObject
@@ -24,11 +47,25 @@
     
     grestore
 
-    % Big stone
+    % Coral reef - front
+    gsave
+    600 180 translate
+    colorReef
+    5 15 1 renderReef
+    grestore
+
+    % Coral reef - front - stones
     gsave
     colorStone
-    3420 60 translate
-    renderStone
+    450 120 translate
+    -1 1 scale
+    renderSmallStone
+    grestore
+
+    gsave
+    colorLightStone
+    630 60 translate
+    renderSmallStone
     grestore
 
 } def

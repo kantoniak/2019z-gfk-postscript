@@ -1,0 +1,109 @@
+%!
+
+%%% Reef
+
+/reefLegShape {
+    newpath
+    120 0 moveto
+    60 120 60 420 60 420 curveto
+    -60 420 lineto
+    -60 420 -60 120 -120 0 curveto
+    -60 -60 60 -60 120 0 curveto
+    fill
+} def
+
+/reefArmShape {
+    newpath
+    420 420 moveto
+    360 480 300 480 240 420 curveto
+    240 180 120 120 0 120 curveto
+    -60 120 -180 120 -240 360 curveto
+    -300 420 -360 420 -420 360 curveto
+    -360 0 -120 -60 0 -60 curveto
+    300 -60 420 240 420 420 curveto
+    fill
+} def
+
+/renderBranches {
+    gsave
+    rotation rotate
+
+    4 dict begin
+    /randomizer exch def
+    /depth exch def
+    
+    % Flip horizontally
+    randomizer 4 mod 0 eq {
+        -1 1 scale
+    } if
+    
+    depth 0 gt {
+        reefArmShape
+
+        /LBscale 75 100 div def
+        /RBscale 50 100 div def
+
+        % Right branch
+        /randomizer randomizer 1 add def
+        randomizer 5 mod 0 ne {
+            gsave
+            330 420 translate
+            RBscale RBscale scale
+            depth 1 sub randomizer renderBranches
+            grestore
+        } if
+
+        % Left branch
+        /randomizer randomizer 1 add def
+        randomizer 7 mod 0 ne {
+            gsave
+            -330 360 translate
+            LBscale LBscale scale
+            depth 1 sub randomizer renderBranches
+            grestore
+        } if
+    } if
+
+    end
+    grestore
+} def
+
+/renderReef {
+    /timeOffset exch def
+    /randomizer exch def
+    /depth exch def
+
+    /rotationLoopTime 16 def
+    /rotationMaxValue 2 def
+
+    gsave
+
+    % Rotate
+    /rotationTimer t timeOffset add def
+    {
+        rotationTimer rotationLoopTime 2 mul le {
+            exit
+        } if
+        /rotationTimer rotationTimer rotationLoopTime sub def
+    } loop
+    
+    rotationTimer rotationLoopTime ge {
+        /rotationTimer rotationTimer rotationLoopTime sub def
+        /rotation rotationTimer rotationLoopTime div rotationMaxValue 2 mul mul rotationMaxValue sub def
+        /rotation rotation -1 mul def
+    } {
+        /rotation rotationTimer rotationLoopTime div rotationMaxValue 2 mul mul rotationMaxValue sub def
+    } ifelse
+
+    rotation rotate
+
+    % Render base
+    reefLegShape
+
+    % Render branches
+    0 420 translate
+    9 10 div 9 10 div scale
+    depth randomizer renderBranches
+
+    grestore
+} def
