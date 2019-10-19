@@ -1,6 +1,89 @@
 %!
 
+(colors.ps) run
+
+%%% Content
+
+/renderAquarium {
+    lineWidth
+
+    % Sand
+    colorSand
+    newpath
+    0 0 moveto
+    720 360 lineto
+    720 1560 lineto
+    3840 0 lineto
+    closepath
+    fill
+
+    % Back wall
+    colorDarkBlue
+    newpath
+    720 360 moveto
+    3120 360 lineto
+    3120 1560 lineto
+    720 1560 lineto
+    closepath
+    gsave
+    fill
+
+    grestore
+    colorLightBlue
+    stroke
+
+    % Left wall
+    colorMidBlue
+    newpath
+    0 0 moveto
+    720 360 lineto
+    720 1560 lineto
+    0 2160 lineto
+    gsave
+    closepath
+    fill
+
+    grestore
+    colorLightBlue
+    stroke
+
+    % Right wall
+    colorMidBlue
+    newpath
+    3840 0 moveto
+    3120 360 lineto
+    3120 1560 lineto
+    3840 2160 lineto
+    gsave
+    closepath
+    fill
+
+    grestore
+    colorLightBlue
+    stroke
+
+    % Top wall
+    colorMidBlue
+    newpath
+    0 2160 moveto
+    720 1560 lineto
+    3120 1560 lineto
+    3840 2160 lineto
+    gsave
+    closepath
+    fill
+
+    grestore
+    colorLightBlue
+    stroke
+} def
+
 /renderFrame {
+    % Aquarium
+    renderAquarium
+
+    % Kwadrat
+    colorSand
     /dx frameWidth totalProgress mul def
     /dy frameHeight totalProgress mul def
     newpath
