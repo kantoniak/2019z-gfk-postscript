@@ -274,20 +274,20 @@
     debug 1 eq {
         debugLine
 
-        /smallPlantScale 9 10 div def
+        /smallPlantScale 8 10 div def
 
         % Left
         gsave
-        240 0 translate
+        180 0 translate
         smallPlantScale smallPlantScale scale
             1560 120 1600 140 16 8 renderDebugPlant
         grestore
 
         % Right
         gsave
-        -240 0 translate
+        -180 0 translate
         smallPlantScale smallPlantScale scale
-            1400 120 1600 140 12 16 renderDebugPlant
+            1400 120 1600 140 12 15 renderDebugPlant
         grestore
 
         % Middle
