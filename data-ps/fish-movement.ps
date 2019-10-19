@@ -5,22 +5,20 @@
 /renderDebugFishPath {
     debugLine
 
-    14 dict begin
+    20 dict begin
 
     % Params
     /timeAtZero exch def
     /t exch def
     /ups 3 def
     /width 2760 def
-    /height 240 def
-    /loopTimeSecs 12 def
+    /height 120 def
+    /loopTimeSecs 24 def
     /squashThreshold 4 100 div def
 
     % Private computation
     /halfTimeSecs loopTimeSecs 2 div def
     /maxSindegs ups 1 sub 360 mul 180 add 2 mul def
-
-    % Debug render computation
     /frameTime 1 fps div def
 
     % Translate to middle
@@ -61,6 +59,22 @@
         } ifelse
     } loop
 
+    /prevV v frameTime sub def
+    {
+        prevV 0 lt {
+            /prevV prevV loopTimeSecs add def
+        } {
+            exit
+        } ifelse
+    } loop
+
+    /prevY maxSindegs prevV loopTimeSecs div mul sin height mul 2 div def
+    prevV halfTimeSecs le {
+        /prevX width prevV mul halfTimeSecs div def
+    } {
+        /prevX width prevV halfTimeSecs sub halfTimeSecs div width mul sub def
+    } ifelse
+
     /y maxSindegs v loopTimeSecs div mul sin height mul 2 div def
     v halfTimeSecs le {
         /x width v mul halfTimeSecs div def
@@ -87,9 +101,18 @@
 
     } ifelse
 
+    /dy prevY y sub def
+    /dx prevX x sub def
+    /angle dy dx atan def
+    prevV halfTimeSecs le {
+        /angle angle -1 mul def
+        /angle angle 180 add def
+    } if
+
     gsave
     x y translate
     xScale 1 scale
+    angle rotate
     renderDebugSquare
     grestore
 
@@ -100,20 +123,21 @@
 } def
 
 /translateAndScaleFishMovement {
-    13 dict begin
+    20 dict begin
 
     % Params
     /timeAtZero exch def
     /t exch def
     /ups 3 def
     /width 2760 def
-    /height 240 def
-    /loopTimeSecs 12 def
+    /height 120 def
+    /loopTimeSecs 24 def
     /squashThreshold 4 100 div def
 
     % Private computation
     /halfTimeSecs loopTimeSecs 2 div def
     /maxSindegs ups 1 sub 360 mul 180 add 2 mul def
+    /frameTime 1 fps div def
 
     % Translate to middle
     gsave
@@ -130,6 +154,22 @@
         } ifelse
     } loop
 
+    /prevV v frameTime sub def
+    {
+        prevV 0 lt {
+            /prevV prevV loopTimeSecs add def
+        } {
+            exit
+        } ifelse
+    } loop
+
+    /prevY maxSindegs prevV loopTimeSecs div mul sin height mul 2 div def
+    prevV halfTimeSecs le {
+        /prevX width prevV mul halfTimeSecs div def
+    } {
+        /prevX width prevV halfTimeSecs sub halfTimeSecs div width mul sub def
+    } ifelse
+
     /y maxSindegs v loopTimeSecs div mul sin height mul 2 div def
     v halfTimeSecs le {
         /x width v mul halfTimeSecs div def
@@ -156,7 +196,15 @@
 
     } ifelse
 
+    /dy prevY y sub def
+    /dx prevX x sub def
+    /angle dy dx atan def
+    prevV halfTimeSecs le {
+        /angle angle 180 add def
+    } if
+
     x y translate
+    angle rotate
     xScale 1 scale
 
     end
