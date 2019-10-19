@@ -3,6 +3,7 @@
 (data-ps/colors.ps) run
 (data-ps/debug.ps) run
 (data-ps/static.ps) run
+(data-ps/plant.ps) run
 (data-ps/reef.ps) run
 (data-ps/fish.ps) run
 (data-ps/fish-movement.ps) run
@@ -33,11 +34,41 @@
     renderSmallStone
     grestore
 
-    % Fish in the middle
+    % Plant - back
+    gsave
+    1080 300 translate
+    -0.8 0.8 scale
+    
+        % Plant
+        colorPlantFar
+        renderPlantGroup
+
+        % Stones
+        colorStoneFar
+        gsave
+        -60 -30 translate
+        renderStone
+        grestore
+
+        colorLightStoneFar
+        gsave
+        -360 -30 translate
+        renderSmallStone
+        grestore
+
+        % Debug
+        debug 1 eq {
+            renderDebugPlantGroup
+        } if
+    
+    grestore
+
+    % Fish
     gsave
     frameWidth 2 div frameHeight 2 div 120 sub translate
     
         t 2 translateAndScaleFishMovement
+        0.8 0.8 scale
         renderFishObject
         grestore
         
@@ -68,9 +99,37 @@
     renderSmallStone
     grestore
 
+    % Plant - front
+    gsave
+    frameWidth 480 sub 90 translate
+    
+        % Plant
+        colorPlant
+        renderPlantGroup
+
+        % Stones
+        colorStone
+        gsave
+        -60 -30 translate
+        renderStone
+        grestore
+
+        colorLightStone
+        gsave
+        -360 -30 translate
+        renderSmallStone
+        grestore
+
+        % Debug
+        debug 1 eq {
+            renderDebugPlantGroup
+        } if
+    
+    grestore
+
 } def
 
-/debug 1 def
+/debug 0 def
 
 renderFrame
 showpage

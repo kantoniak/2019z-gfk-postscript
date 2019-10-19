@@ -1,0 +1,296 @@
+%!
+
+%%% Plant
+
+/basePlantLeafShape {
+    newpath
+    0 0 moveto
+    60 120 60 180 0 180 curveto
+    -60 180 -60 120 0 0 curveto
+} def
+
+/renderPlantLeaf {
+    basePlantLeafShape
+    fill
+} def
+
+/getPlantStemX {
+    y piHeight div loopedTime loopTime div add 360 mul sin width 2 div mul
+} def
+
+/renderDebugPlant {
+    0 1 0 setrgbcolor
+    debugLine
+
+    15 dict begin
+    /timeOffset exch def
+    /loopTime exch def
+    /leafEvery exch def
+    /piHeight exch def
+    /width exch def
+    /height exch def
+
+    /loopedTime timeOffset t add def
+    {
+        loopedTime loopTime le {
+            exit
+        } if
+        /loopedTime loopedTime loopTime sub def
+    } loop
+
+    /y 0 def
+    /x getPlantStemX def
+
+    gsave
+    -1 x mul y translate
+
+    % Render stem
+    newpath
+    
+    x y moveto
+    {
+        /y y 20 add def
+        y height gt {
+            exit
+        } if
+        /x getPlantStemX def
+        x y lineto
+    } loop
+
+    /y height def
+    /x getPlantStemX def
+    x y lineto
+
+    stroke
+
+    % Render leaves
+    /y height leafEvery add def
+    /x getPlantStemX def
+    /prevY y def
+    /prevX x def
+    /y height def
+    /x getPlantStemX def
+
+    % Top leaf
+    /dy prevY y sub def
+    /dx prevX x sub def
+    /angleL dy dx atan 90 sub def
+
+    gsave
+    x y translate
+    angleL rotate
+    0 1 0 setrgbcolor
+    newpath
+    0 0 moveto
+    0 100 lineto
+    stroke
+    grestore
+
+    % Render top dot
+    1 0 0 setrgbcolor
+    newpath
+    x y 6 0 360 arc
+    fill
+    
+    /prevY y def
+    /prevX x def
+    /y y leafEvery 3 div sub def
+
+    {
+        y 0 le {
+            exit
+        } if
+        /x getPlantStemX def
+
+        % Render leaves
+        /dy prevY y sub def
+        /dx prevX x sub def
+        /angleL dy dx atan 30 sub def
+        /angleR dy dx atan 180 add 30 add def
+
+        % Left leaf
+        gsave
+        x y translate
+        angleL rotate
+        0 1 0 setrgbcolor
+        newpath
+        0 0 moveto
+        0 100 lineto
+        stroke
+        grestore
+
+        % Right leaf
+        gsave
+        x y translate
+        angleR rotate
+        0 1 0 setrgbcolor
+        newpath
+        0 0 moveto
+        0 100 lineto
+        stroke
+        grestore
+
+        % Render dot
+        1 0 0 setrgbcolor
+        newpath
+        x y 6 0 360 arc
+        fill
+
+        % Next
+        /prevY y def
+        /prevX x def
+        /y y leafEvery sub def
+    } loop
+
+    grestore
+    end
+} def
+
+/renderPlant {
+    standardLine
+
+    15 dict begin
+    /timeOffset exch def
+    /loopTime exch def
+    /leafEvery exch def
+    /piHeight exch def
+    /width exch def
+    /height exch def
+
+    /loopedTime timeOffset t add def
+    {
+        loopedTime loopTime le {
+            exit
+        } if
+        /loopedTime loopedTime loopTime sub def
+    } loop
+
+    /y 0 def
+    /x getPlantStemX def
+
+    gsave
+    -1 x mul y translate
+
+    % Render stem
+    newpath
+    
+    x y moveto
+    {
+        /y y 20 add def
+        y height gt {
+            exit
+        } if
+        /x getPlantStemX def
+        x y lineto
+    } loop
+
+    /y height def
+    /x getPlantStemX def
+    x y lineto
+
+    stroke
+
+    % Render leaves
+    /y height leafEvery add def
+    /x getPlantStemX def
+    /prevY y def
+    /prevX x def
+    /y height def
+    /x getPlantStemX def
+
+    % Top leaf
+    /dy prevY y sub def
+    /dx prevX x sub def
+    /angleL dy dx atan 90 sub def
+
+    gsave
+    x y translate
+    angleL rotate
+    renderPlantLeaf
+    grestore
+    
+    /prevY y def
+    /prevX x def
+    /y y leafEvery 3 div sub def
+
+    {
+        y 0 le {
+            exit
+        } if
+        /x getPlantStemX def
+
+        % Render leaves
+        /dy prevY y sub def
+        /dx prevX x sub def
+        /angleL dy dx atan 30 sub def
+        /angleR dy dx atan 180 add 30 add def
+
+        % Left leaf
+        gsave
+        x y translate
+        angleL rotate
+        renderPlantLeaf
+        grestore
+
+        % Right leaf
+        gsave
+        x y translate
+        angleR rotate
+        renderPlantLeaf
+        grestore
+
+        % Next
+        /prevY y def
+        /prevX x def
+        /y y leafEvery sub def
+    } loop
+
+    grestore
+    end
+} def
+
+/renderPlantGroup {
+    /smallPlantScale 8 10 div def
+
+    % Left
+    gsave
+    180 0 translate
+    smallPlantScale smallPlantScale scale
+        1560 120 1600 140 16 8 renderPlant
+    grestore
+
+    % Right
+    gsave
+    -180 0 translate
+    smallPlantScale smallPlantScale scale
+        1400 120 1600 140 12 15 renderPlant
+    grestore
+
+    % Middle
+    1800 120 1600 140 18 2 renderPlant
+} def
+
+/renderDebugPlantGroup {
+    debug 1 eq {
+        debugLine
+
+        /smallPlantScale 9 10 div def
+
+        % Left
+        gsave
+        240 0 translate
+        smallPlantScale smallPlantScale scale
+            1560 120 1600 140 16 8 renderDebugPlant
+        grestore
+
+        % Right
+        gsave
+        -240 0 translate
+        smallPlantScale smallPlantScale scale
+            1400 120 1600 140 12 16 renderDebugPlant
+        grestore
+
+        % Middle
+        1800 120 1600 140 18 2 renderDebugPlant
+    } if
+} def
