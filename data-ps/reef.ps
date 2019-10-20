@@ -29,11 +29,11 @@
     rotation rotate
 
     4 dict begin
-    /randomizer exch def
+    /seed exch def
     /depth exch def
     
     % Flip horizontally
-    randomizer 4 mod 0 eq {
+    seed 4 mod 0 eq {
         -1 1 scale
     } if
     
@@ -44,22 +44,22 @@
         /RBscale 50 100 div def
 
         % Right branch
-        /randomizer randomizer 1 add def
-        randomizer 5 mod 0 ne {
+        /seed seed 1 add def
+        seed 5 mod 0 ne {
             gsave
             330 420 translate
             RBscale RBscale scale
-            depth 1 sub randomizer renderBranches
+            depth 1 sub seed renderBranches
             grestore
         } if
 
         % Left branch
-        /randomizer randomizer 1 add def
-        randomizer 7 mod 0 ne {
+        /seed seed 1 add def
+        seed 7 mod 0 ne {
             gsave
             -330 360 translate
             LBscale LBscale scale
-            depth 1 sub randomizer renderBranches
+            depth 1 sub seed renderBranches
             grestore
         } if
     } if
@@ -70,7 +70,7 @@
 
 /renderReef {
     /timeOffset exch def
-    /randomizer exch def
+    /seed exch def
     /depth exch def
 
     /rotationLoopTime 16 def
@@ -103,7 +103,7 @@
     % Render branches
     0 420 translate
     9 10 div 9 10 div scale
-    depth randomizer renderBranches
+    depth seed renderBranches
 
     grestore
 } def
