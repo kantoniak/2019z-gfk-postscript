@@ -32,6 +32,16 @@ To build the movie enter the main directory and run:
 
 See `constants.ps` for FPS settings etc.
 
+### Rendering a single frame
+
+To render a single frame run:
+
+	./setup-deps.sh
+    ./setup-frames.sh
+    ./render-frame.sh <frame-num>
+
+For subsequent renders you can just run `render-frame.sh`.
+
 ### Debug mode
 
 <p align="center">
